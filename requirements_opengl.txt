@@ -11,5 +11,6 @@ pyglet
 # New 3D Rendering Stack
 moderngl
 moderngl-window
+pyglet
 pillow
 scipy
