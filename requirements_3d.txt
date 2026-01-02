@@ -1,0 +1,20 @@
+# Core dependencies (from original requirements.txt)
+fastf1
+pandas
+matplotlib
+numpy
+arcade
+pyglet
+
+# NEW: 3D rendering dependencies
+PyOpenGL
+PyOpenGL_accelerate
+glfw
+
+# Optional: Enhanced 3D features (commented out - uncomment if needed)
+# PyGLM  # Good math library for 3D calculations
+# pygame  # Alternative to GLFW for window management
+
+# Development dependencies (optional)
+# psutil  # For system monitoring
+# pygame  # For input handling

@@ -1,5 +1,6 @@
 from src.f1_data import get_race_telemetry, enable_cache, get_circuit_rotation, load_session, get_quali_telemetry, list_rounds, list_sprints
 from src.arcade_replay import run_arcade_replay
+from src.rendering.renderer import run_3d_replay  # NEW: 3D rendering support
 
 from src.interfaces.qualifying import run_qualifying_replay
 import sys
@@ -22,6 +23,11 @@ def main(year=None, round_number=None, playback_speed=1, session_type='R'):
     # Run the arcade screen showing qualifying results
 
     title = f"{session.event['EventName']} - {'Sprint Qualifying' if session_type == 'SQ' else 'Qualifying Results'}"
+    
+    # Check if 3D mode requested (not yet implemented for qualifying)
+    use_3d = "--3d" in sys.argv
+    if use_3d:
+        print("NOTE: 3D mode not yet implemented for qualifying. Using 2D arcade mode.")
     
     run_qualifying_replay(
       session=session,
@@ -49,19 +55,37 @@ def main(year=None, round_number=None, playback_speed=1, session_type='R'):
 
     # Check for optional chart flag
     chart = "--chart" in sys.argv
-
-    run_arcade_replay(
-        frames=race_telemetry['frames'],
-        track_statuses=race_telemetry['track_statuses'],
-        example_lap=example_lap,
-        drivers=drivers,
-        playback_speed=1.0,
-        driver_colors=race_telemetry['driver_colors'],
-        title=f"{session.event['EventName']} - {'Sprint' if session_type == 'S' else 'Race'}",
-        total_laps=race_telemetry['total_laps'],
-        circuit_rotation=circuit_rotation,
-        chart=chart,
-    )
+    
+    # Check if 3D mode requested
+    use_3d = "--3d" in sys.argv
+    
+    if use_3d:
+        print("Running in 3D mode")
+        run_3d_replay(
+            frames=race_telemetry['frames'],
+            track_statuses=race_telemetry['track_statuses'],
+            example_lap=example_lap,
+            drivers=drivers,
+            playback_speed=playback_speed,
+            driver_colors=race_telemetry['driver_colors'],
+            title=f"{session.event['EventName']} - {'Sprint' if session_type == 'S' else 'Race'}",
+            total_laps=race_telemetry['total_laps'],
+            circuit_rotation=circuit_rotation,
+            chart=chart,
+        )
+    else:
+        run_arcade_replay(
+            frames=race_telemetry['frames'],
+            track_statuses=race_telemetry['track_statuses'],
+            example_lap=example_lap,
+            drivers=drivers,
+            playback_speed=1.0,
+            driver_colors=race_telemetry['driver_colors'],
+            title=f"{session.event['EventName']} - {'Sprint' if session_type == 'S' else 'Race'}",
+            total_laps=race_telemetry['total_laps'],
+            circuit_rotation=circuit_rotation,
+            chart=chart,
+        )
 
 if __name__ == "__main__":
 

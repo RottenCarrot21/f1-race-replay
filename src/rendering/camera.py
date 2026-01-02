@@ -2,7 +2,12 @@
 
 import numpy as np
 from typing import Tuple
-import glm  # We'll use GLM for matrix math if available, otherwise numpy
+
+try:
+    import glm  # Optional: GLM library for better matrix math performance
+    HAS_GLM = True
+except ImportError:
+    HAS_GLM = False  # Fall back to numpy operations
 
 
 def perspective(fov: float, aspect: float, near: float, far: float) -> np.ndarray:
